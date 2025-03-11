@@ -1,20 +1,15 @@
-const { Model, DataTypes } = require('sequelize');
+// models/category.js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/connection'); // Adjust path as necessary
 
-const sequelize = require('../config/connection.js');
-
-class Category extends Model {}
-
-Category.init(
-  {
-    // define columns
-  },
-  {
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: 'category',
+// Define the Category model
+const Category = sequelize.define('Category', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
-);
+}, {
+  tableName: 'categories', // Ensure this matches your table name in PostgreSQL
+});
 
 module.exports = Category;

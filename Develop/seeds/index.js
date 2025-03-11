@@ -1,26 +1,25 @@
-const seedCategories = require('./category-seeds');
-const seedProducts = require('./product-seeds');
-const seedTags = require('./tag-seeds');
-const seedProductTags = require('./product-tag-seeds');
+// seeds/index.js
+require('dotenv').config();
+const sequelize = require('../config/connection'); // Path to your sequelize connection
+const Category = require('../models/Category'); // Path to your Category model
 
-const sequelize = require('../config/connection');
+const seedData = async () => {
+  try {
+    // Sync the models (this ensures the tables exist)
+    await sequelize.sync({ force: true });  // Will drop and recreate tables
 
-const seedAll = async () => {
-  await sequelize.sync({ force: true });
-  console.log('\n----- DATABASE SYNCED -----\n');
-  await seedCategories();
-  console.log('\n----- CATEGORIES SEEDED -----\n');
+    // Seed Categories
+    await Category.bulkCreate([
+      { name: 'Electronics' },
+      { name: 'Books' },
+      { name: 'Clothing' }
+    ]);
 
-  await seedProducts();
-  console.log('\n----- PRODUCTS SEEDED -----\n');
-
-  await seedTags();
-  console.log('\n----- TAGS SEEDED -----\n');
-
-  await seedProductTags();
-  console.log('\n----- PRODUCT TAGS SEEDED -----\n');
-
-  process.exit(0);
+    console.log('Categories have been seeded.');
+  } catch (error) {
+    console.error('Error seeding data:', error);
+  }
 };
 
-seedAll();
+// Call the seed function
+seedData();

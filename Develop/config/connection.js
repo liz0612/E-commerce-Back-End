@@ -1,15 +1,10 @@
-require('dotenv').config();
+// config/connection.js
+const { Sequelize } = require('sequelize');
 
-const Sequelize = require('sequelize');
-
-const sequelize = process.env.DB_URL
-  ? new Sequelize(process.env.DB_URL)
-  : new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-      host: 'localhost',
-      dialect: 'postgres',
-      dialectOptions: {
-        decimalNumbers: true,
-      },
-    });
+// Ensure you're connecting with your correct credentials
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
+});
 
 module.exports = sequelize;
